@@ -1,0 +1,10 @@
+name: simulation
+root: ./
+
+startup_window: state_machine
+pre_window: export UAV_NAME=uav3
+windows:
+  - rviz:
+      layout: even-vertical
+      panes:
+        - waitForOdometry; roslaunch mtsp_state_machine rviz_3_4.launch

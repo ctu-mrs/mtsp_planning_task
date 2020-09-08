@@ -1,0 +1,10 @@
+string name
+string type
+string comment
+uint32 dimension
+uint32 number_of_robots
+mtsp_msgs/TspPoint[] start_points
+float64 neighborhood_radius
+string edge_weight_type
+mtsp_msgs/TspPoint[] points
+float64 height

@@ -1,0 +1,9 @@
+<launch>
+
+  <group>
+
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find mtsp_state_machine)/rviz/rviz_3_4.rviz" />
+
+  </group>
+
+</launch>

@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+
+  <name>mtsp_msgs</name>
+  <version>0.0.1</version>
+  <description>MTSP msgs</description>
+
+  <author email="robert.penicka@fel.cvut.cz">Robert Penicka</author>
+  <maintainer email="tomas.baca@fel.cvut.cz">Tomas Baca</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>cmake_modules</depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>message_runtime</depend>
+  <depend>message_generation</depend>
+
+  <export>
+  </export>
+
+</package>

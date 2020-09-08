@@ -1,0 +1,51 @@
+rate: 25
+
+estimator_types: [
+  "BRICKFLOW",
+  "HECTOR",
+  "T265",
+  "BRICK",
+  "VIO",
+  "ICP",
+  "RTK",
+  "OPTFLOWGPS",
+  "GPS",
+  "OPTFLOW",
+  "OTHER",
+]
+
+constraints: [
+  "mtsp",
+]
+
+constraint_management:
+
+  # list of allowed gains per odometry mode
+  allowed_constraints:
+    BRICKFLOW: ["mtsp"]
+    OPTFLOW: ["mtsp"]
+    HECTOR: ["mtsp"]
+    T265: ["mtsp"]
+    BRICK: ["mtsp"]
+    VIO: ["mtsp"]
+    ICP: ["mtsp"]
+    RTK: ["mtsp"]
+    OPTFLOWGPS: ["mtsp"]
+    GPS: ["mtsp"]
+    OPTFLOW: ["mtsp"]
+    OTHER: ["mtsp"]
+
+  # those gains will be used automatically when a localization mode switches
+  # and the current gains are not in the allowed list (next paragraphs)
+  fallback_constraints:
+    BRICKFLOW: "mtsp"
+    HECTOR: "mtsp"
+    T265: "mtsp"
+    BRICK: "mtsp"
+    VIO: "mtsp"
+    ICP: "mtsp"
+    RTK: "mtsp"
+    OPTFLOWGPS: "mtsp"
+    GPS: "mtsp"
+    OPTFLOW: "mtsp"
+    OTHER: "mtsp"

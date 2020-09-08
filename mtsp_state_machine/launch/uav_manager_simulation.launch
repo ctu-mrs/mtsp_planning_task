@@ -1,0 +1,184 @@
+<launch>
+
+  <!-- args corresponding to environment variables -->
+  <arg name="RUN_TYPE" default="$(env RUN_TYPE)" />
+  <arg name="UAV_TYPE" default="$(env UAV_TYPE)" />
+  <arg name="PROPULSION_TYPE" default="$(optenv PROPULSION_TYPE default)" />
+  <arg name="ODOMETRY_TYPE" default="$(env ODOMETRY_TYPE)" />
+  <arg name="PROFILER" default="$(optenv PROFILER false)" />
+  <arg name="UAV_NAME" default="$(env UAV_NAME)" />
+  <arg name="PIXGARM" default="$(optenv PIXGARM false)" />
+  <arg name="STANDALONE" default="$(optenv STANDALONE false)" />
+  <arg name="BODY_DISTURBANCE_X" default="$(optenv INITIAL_DISTURBANCE_X 0.0)" />
+  <arg name="BODY_DISTURBANCE_Y" default="$(optenv INITIAL_DISTURBANCE_Y 0.0)" />
+  <arg name="DEBUG" default="$(optenv DEBUG false)" />
+  <arg name="WORLD_FILE" default="$(find mtsp_state_machine)/config/simulation/world.yaml" />
+  <arg name="WORLD_NAME" default="$(optenv WORLD_NAME)" />
+
+    <!-- currently, ROS_IP has to be set to 127.0.0.1 otherwise ROS dies when -->
+    <!-- the drone disconnects from wifi -->
+  <!-- <arg if="$(eval arg('RUN_TYPE') == 'uav')" name="ROS_IP" default="$(optenv ROS_IP none)" /> -->
+  <!-- <arg if="$(eval arg('RUN_TYPE') == 'uav' and arg('ROS_IP') != '127.0.0.1')" name="SET_YOUR_ROS_IP_TO_127.0.0.1" default="$(env MISSING_ROS_IP)" /> -->
+
+    <!-- currently, ROS_MASTER_URI has to be set to http://localhost:11311 otherwise ROS dies when -->
+    <!-- the drone disconnects from wifi -->
+  <arg if="$(eval arg('RUN_TYPE') == 'uav')" name="ROS_MASTER_URI" default="$(optenv ROS_MASTER_URI none)" />
+  <arg if="$(eval arg('RUN_TYPE') == 'uav' and arg('ROS_MASTER_URI') != 'http://localhost:11311')" name="SET_YOUR_ROS_MASTER_URI_TO_LOCALHOST" default="$(env MISSING_ROS_MASTER_URI)" />
+
+    <!-- custom configs args -->
+  <arg name="config_constraint_manager" default="" />
+  <arg name="config_gain_manager" default="" />
+  <arg name="config_uav_manager" default="" />
+  <arg name="config_control_manager" default="" />
+  <arg name="config_odometry" default="" />
+
+    <!-- custom configs for trackers -->
+  <arg name="config_csv_tracker" default="" />
+  <arg name="config_joy_tracker" default="" />
+  <arg name="config_landoff_tracker" default="" />
+  <arg name="config_line_tracker" default="" />
+  <arg name="config_matlab_tracker" default="" />
+  <arg name="config_mpc_tracker" default="" />
+  <arg name="config_uav_names" default="" />
+
+    <!-- custom configs for controllers -->
+  <arg name="config_failsafe_controller" default="" />
+  <arg name="config_mpc_controller" default="" />
+  <arg name="config_emergency_controller" default="" />
+  <arg name="config_nsf_controller" default="" />
+  <arg name="config_se3_controller" default="" />
+
+  <arg name="g" default="9.8" />
+  <arg name="n_threads" default="16" />
+
+  <arg if="$(eval arg('RUN_TYPE') == 'simulation' and arg('UAV_TYPE') == 'f450')" name="UAV_MASS" default="2.0" />
+  <arg if="$(eval arg('RUN_TYPE') == 'simulation' and arg('UAV_TYPE') == 'f550')" name="UAV_MASS" default="2.3" />
+  <arg if="$(eval arg('RUN_TYPE') == 'simulation' and arg('UAV_TYPE') == 't650')" name="UAV_MASS" default="3.5" />
+  <arg if="$(eval arg('RUN_TYPE') == 'simulation' and arg('UAV_TYPE') == 'm600')" name="UAV_MASS" default="10.0" />
+  <arg if="$(eval arg('RUN_TYPE') == 'simulation' and arg('UAV_TYPE') == 'eaglemk2')" name="UAV_MASS" default="10.0" />
+  <arg if="$(eval arg('RUN_TYPE') == 'uav')" name="UAV_MASS" default="$(env UAV_MASS)" />
+
+  <arg if="$(eval arg('WORLD_FILE') == '' and arg('WORLD_NAME') != '')" name="world_file" value="$(find mrs_uav_general)/config/worlds/world_$(env WORLD_NAME).yaml" />
+  <arg if="$(eval arg('WORLD_FILE') == '' and arg('WORLD_NAME') == '' and arg('RUN_TYPE') == 'simulation')" name="world_file" value="$(find mrs_uav_general)/config/worlds/world_simulation.yaml" />
+  <arg if="$(eval arg('WORLD_FILE') != '')" name="world_file" value="$(arg WORLD_FILE)" />
+
+    <!-- NodeletManager //{ -->
+
+  <include file="$(find mrs_uav_general)/launch/nodelet_manager.launch">
+
+    <arg name="standalone" value="$(arg STANDALONE)" />
+    <arg name="debug" value="$(arg DEBUG)" />
+    <arg name="n_threads" value="$(arg n_threads)" />
+
+  </include>
+
+  <!-- //} -->
+
+  <!-- ControlManager //{ -->
+
+  <include file="$(find mrs_uav_managers)/launch/control_manager.launch">
+
+    <arg name="UAV_NAME" value="$(arg UAV_NAME)" />
+    <arg name="UAV_MASS" value="$(arg UAV_MASS)" />
+    <arg name="PROFILER" value="$(arg PROFILER)" />
+    <arg name="BODY_DISTURBANCE_X" value="$(arg BODY_DISTURBANCE_X)" />
+    <arg name="BODY_DISTURBANCE_Y" value="$(arg BODY_DISTURBANCE_Y)" />
+    <arg name="RUN_TYPE" value="$(arg RUN_TYPE)" />
+    <arg name="UAV_TYPE" value="$(arg UAV_TYPE)" />
+    <arg name="PROPULSION_TYPE" value="$(arg PROPULSION_TYPE)" />
+    <arg name="ODOMETRY_TYPE" value="$(arg ODOMETRY_TYPE)" />
+
+    <arg name="standalone" value="$(arg STANDALONE)" />
+    <arg name="WORLD_FILE" value="$(arg world_file)" />
+    <arg name="g" value="$(arg g)" />
+    <arg name="custom_config" value="$(arg config_control_manager)" />
+
+    <arg name="custom_config_csv_tracker" value="$(arg config_csv_tracker)" />
+    <arg name="custom_config_joy_tracker" value="$(arg config_joy_tracker)" />
+    <arg name="custom_config_landoff_tracker" value="$(arg config_landoff_tracker)" />
+    <arg name="custom_config_line_tracker" value="$(arg config_line_tracker)" />
+    <arg name="custom_config_matlab_tracker" value="$(arg config_matlab_tracker)" />
+    <arg name="custom_config_mpc_tracker" value="$(arg config_mpc_tracker)" />
+    <arg name="custom_config_uav_names" value="$(arg config_uav_names)" />
+
+    <arg name="custom_config_failsafe_controller" value="$(arg config_failsafe_controller)" />
+    <arg name="custom_config_mpc_controller" value="$(arg config_mpc_controller)" />
+    <arg name="custom_config_emergency_controller" value="$(arg config_emergency_controller)" />
+    <arg name="custom_config_nsf_controller" value="$(arg config_nsf_controller)" />
+    <arg name="custom_config_se3_controller" value="$(arg config_se3_controller)" />
+
+  </include>
+
+  <!-- //} -->
+
+  <!-- Odometry //{ -->
+
+  <include file="$(find mrs_uav_odometry)/launch/odometry.launch">
+
+    <arg name="ODOMETRY_TYPE" value="$(arg ODOMETRY_TYPE)" />
+    <arg name="PROFILER" value="$(arg PROFILER)" />
+    <arg name="PIXGARM" value="$(arg PIXGARM)" />
+    <arg name="UAV_MASS" value="$(arg UAV_MASS)" />
+
+    <arg name="standalone" value="$(arg STANDALONE)" />
+    <arg name="WORLD_FILE" value="$(arg world_file)" />
+    <arg name="custom_config" value="$(arg config_odometry)" />
+
+  </include>
+
+  <!-- //} -->
+
+  <!-- ConstraintManager //{ -->
+
+  <include file="$(find mrs_uav_managers)/launch/constraint_manager.launch">
+
+    <arg name="UAV_NAME" value="$(arg UAV_NAME)" />
+    <arg name="PROFILER" value="$(arg PROFILER)" />
+    <arg name="RUN_TYPE" value="$(arg RUN_TYPE)" />
+    <arg name="UAV_TYPE" value="$(arg UAV_TYPE)" />
+
+    <arg name="standalone" value="$(arg STANDALONE)" />
+    <arg name="custom_config" value="$(arg config_constraint_manager)" />
+
+  </include>
+
+  <!-- //} -->
+
+  <!-- GainManger //{ -->
+
+  <include file="$(find mrs_uav_managers)/launch/gain_manager.launch">
+
+    <arg name="UAV_NAME" value="$(arg UAV_NAME)" />
+    <arg name="PROFILER" value="$(arg PROFILER)" />
+    <arg name="RUN_TYPE" value="$(arg RUN_TYPE)" />
+    <arg name="UAV_TYPE" value="$(arg UAV_TYPE)" />
+
+    <arg name="standalone" value="$(arg STANDALONE)" />
+    <arg name="custom_config" value="$(arg config_gain_manager)" />
+
+  </include>
+
+  <!-- //} -->
+
+  <!-- UavManager //{ -->
+
+  <include file="$(find mrs_uav_managers)/launch/uav_manager.launch">
+
+    <arg name="UAV_NAME" value="$(arg UAV_NAME)" />
+    <arg name="UAV_MASS" value="$(arg UAV_MASS)" />
+    <arg name="PROFILER" value="$(arg PROFILER)" />
+    <arg name="RUN_TYPE" value="$(arg RUN_TYPE)" />
+    <arg name="UAV_TYPE" value="$(arg UAV_TYPE)" />
+    <arg name="PROPULSION_TYPE" value="$(arg PROPULSION_TYPE)" />
+    <arg name="ODOMETRY_TYPE" value="$(arg ODOMETRY_TYPE)" />
+
+    <arg name="standalone" value="$(arg STANDALONE)" />
+    <arg name="WORLD_FILE" value="$(arg world_file)" />
+    <arg name="g" value="$(arg g)" />
+    <arg name="custom_config" value="$(arg config_uav_manager)" />
+
+  </include>
+
+  <!-- //} -->
+
+</launch>

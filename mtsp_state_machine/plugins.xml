@@ -1,0 +1,5 @@
+<library path="lib/libMtspStateMachine">
+  <class name="mtsp_state_machine/MtspStateMachine" type="mtsp_state_machine::MtspStateMachine" base_class_type="nodelet::Nodelet">
+    <description>MtspStateMachine nodelet</description>
+  </class>
+</library>

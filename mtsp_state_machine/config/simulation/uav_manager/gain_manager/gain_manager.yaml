@@ -1,0 +1,50 @@
+rate: 25
+
+estimator_types: [
+  "BRICKFLOW",
+  "HECTOR",
+  "T265",
+  "BRICK",
+  "VIO",
+  "ICP",
+  "RTK",
+  "OPTFLOWGPS",
+  "GPS",
+  "OPTFLOW",
+  "OTHER",
+]
+
+gains: [
+  "soft"
+]
+
+gain_management:
+
+  # list of allowed gains per odometry mode
+  allowed_gains:
+    BRICKFLOW: ["soft"]
+    HECTOR: ["soft"]
+    T265: ["soft"]
+    BRICK: ["soft"]
+    VIO: ["soft"]
+    ICP: ["soft"]
+    RTK: ["soft"]
+    OPTFLOWGPS: ["soft"]
+    GPS: ["soft"]
+    OPTFLOW: ["soft"]
+    OTHER: ["soft"]
+
+  # those gains will be used automatically when a localization mode switches
+  # and the current gains are not in the allowed list (next paragraphs)
+  fallback_gains:
+    BRICKFLOW: "soft"
+    HECTOR: "soft"
+    T265: "soft"
+    BRICK: "soft"
+    VIO: "soft"
+    ICP: "soft"
+    RTK: "soft"
+    OPTFLOWGPS: "soft"
+    GPS: "soft"
+    OPTFLOW: "soft"
+    OTHER: "soft"

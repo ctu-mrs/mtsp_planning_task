@@ -1,0 +1,23 @@
+<launch>
+
+  <arg name="uav_name" default="$(optenv UAV_NAME uav)"/>
+
+  <group ns="$(arg uav_name)">
+
+    <node name="mtsp_problem_loader" pkg="mtsp_problem_loader" type="loader.py" output="screen">
+
+      <rosparam file="$(find mtsp_problem_loader)/config/simulation.yaml" command="load" />
+
+      <param name="filename" value="$(find mtsp_problem_loader)/problems/random_problem.tsp" />
+
+      <!-- Topics -->
+      <remap from="~tsp_problem_out" to="~tsp_problem" />
+
+      <!-- Service clients -->
+      <remap from="~start_in" to="~start" />
+
+    </node>
+
+  </group>
+
+</launch>

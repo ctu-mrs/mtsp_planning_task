@@ -1,0 +1,51 @@
+<launch>
+
+  <!-- args corresponding to environment variables -->
+  <arg name="UAV_NAME" default="$(env UAV_NAME)" />
+  <arg name="RUN_TYPE" default="$(env RUN_TYPE)" />
+
+  <arg name="custom_config" default="" />
+
+  <arg if="$(eval arg('RUN_TYPE') == 'simulation')" name="simulation" default="true" />
+  <arg if="$(eval arg('RUN_TYPE') == 'uav')" name="simulation" default="false" />
+
+    <!-- other args -->
+  <arg name="standalone" default="true" />
+
+  <arg     if="$(arg standalone)" name="nodelet" value="standalone" />
+  <arg unless="$(arg standalone)" name="nodelet" value="load" />
+  <arg     if="$(arg standalone)" name="nodelet_manager" value="" />
+  <arg unless="$(arg standalone)" name="nodelet_manager" value="$(arg UAV_NAME)_vision_nodelet_manager" />
+
+  <group ns="$(arg UAV_NAME)">
+
+    <node name="automatic_start" pkg="nodelet" type="nodelet" args="$(arg nodelet) mrs_uav_general/AutomaticStart $(arg nodelet_manager)" output="screen">
+
+      <rosparam file="$(find mtsp_state_machine)/config/automatic_start.yaml" />
+
+      <!-- Load a user param file -->
+      <rosparam if="$(eval not arg('custom_config') == '')" file="$(arg custom_config)" />
+
+      <param name="uav_name" value="$(arg UAV_NAME)" />
+
+        <!-- Subscribers -->
+      <remap from="~mavros_state_in" to="mavros/state" />
+      <remap from="~control_manager_diagnostics_in" to="control_manager/diagnostics" />
+
+        <!-- services -->
+      <remap from="~takeoff_out" to="uav_manager/takeoff" />
+      <remap from="~land_home_out" to="uav_manager/land_home" />
+      <remap from="~land_out" to="uav_manager/land" />
+      <remap from="~eland_out" to="control_manager/eland" />
+      <remap from="~motors_out" to="control_manager/motors" />
+      <remap from="~arm_out" to="mavros/cmd/arming" />
+      <remap from="~validate_reference_out" to="control_manager/validate_reference_2d" />
+
+      <remap from="~start_out" to="~start" />
+      <remap from="~stop_out" to="~stop" />
+
+    </node>
+
+  </group>
+
+</launch>

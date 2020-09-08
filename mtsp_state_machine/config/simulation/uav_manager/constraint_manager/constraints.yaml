@@ -1,0 +1,27 @@
+mtsp:
+
+  horizontal:
+    speed: 7.0
+    acceleration: 2.5
+    jerk: 3.0
+    snap: 10.0
+
+  vertical:
+
+    ascending:
+      speed: 1.0
+      acceleration: 1.0
+      jerk: 3.0
+      snap: 5.0
+
+    descending:
+      speed: 1.0
+      acceleration: 1.0
+      jerk: 3.0
+      snap: 5.0
+
+  yaw:
+    speed: 1.0
+    acceleration: 1.0
+    jerk: 3.0
+    snap: 5.0
