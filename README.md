@@ -1,7 +1,7 @@
 ---
 title: "Practical seminar task assignment"
 author: Multi-robot Systems (MRS) group at Czech Technical University in Prague
-date: July 29, 2019
+date: September 2020
 geometry: margin=1.1cm
 output: pdf_document
 ---
