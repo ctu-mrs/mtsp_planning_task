@@ -21,7 +21,7 @@ However, the planner has poor performance and thus can be significantly improved
 Clone or download template of the seminar task at [https://github.com/ctu-mrs/mtsp_planning_task](https://github.com/ctu-mrs/mtsp_planning_task) to ~/workspace/src/, e.g., by running
 ```bash
 cd ~/workspace/src/
-git clone git@mrs.felk.cvut.cz:summer-school/seminar_task.git
+git clone git@github.com:ctu-mrs/mtsp_planning_task
 ```
 Make sure to install dependencies by running *install_dependencies.sh*.
 Afterward, you can compile the workspace by running *catkin build* in the ~/workspace.
