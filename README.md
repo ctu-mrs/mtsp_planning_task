@@ -18,7 +18,7 @@ However, the planner has poor performance and thus can be significantly improved
 
 ## How to start
 
-Clone or download template of the seminar task at [https://mrs.felk.cvut.cz/gitlab/summer-school/seminar_task](https://mrs.felk.cvut.cz/gitlab/summer-school/seminar_task) to ~/workspace/src/, e.g., by running
+Clone or download template of the seminar task at [https://github.com/ctu-mrs/mtsp_planning_task](https://github.com/ctu-mrs/mtsp_planning_task) to ~/workspace/src/, e.g., by running
 ```bash
 cd ~/workspace/src/
 git clone git@mrs.felk.cvut.cz:summer-school/seminar_task.git
