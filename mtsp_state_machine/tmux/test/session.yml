@@ -73,10 +73,10 @@ windows:
         - 'export UAV_NAME=uav2;
           history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[-10.0, 0.0, 3.0, 0.0\]\";
           history -s rosservice call /$UAV_NAME/control_manager/goto \"goal: \[10.0, 0.0, 3.0, 0.0\]\"'
-  # - gazebo_camera_follow:
-  #     layout: tiled
-  #     panes:
-  #       - waitForOdometry; gz camera -c gzclient_camera -f uav1; history -s gz camera -c gzclient_camera -f uav1
+  - gazebo_camera_follow:
+      layout: tiled
+      panes:
+        - waitForOdometry; gz camera -c gzclient_camera -f uav1; history -s gz camera -c gzclient_camera -f uav1
   - rviz:
       layout: even-vertical
       panes:
