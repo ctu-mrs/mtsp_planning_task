@@ -138,7 +138,7 @@ class TspPlanner:
         # copy the points
         if self._plot:
             ax = MTSPProblem.plot_problem(tsp_problem, show=False)
-            arena_corners = read_world_file_arena(os.path.join(this_script_path, "../../mtsp_state_machine/config/simulation/world.yaml"))
+            arena_corners = read_world_file_arena(os.path.join(this_script_path, "../../mtsp_state_machine/config/world.yaml"))
             plt.plot([arena_corners[i][0] for i in range(-1, len(arena_corners))], [arena_corners[i][1] for i in range(-1, len(arena_corners))], 'c-',label='fly area')
             
         tsp_solver = TSPSolver()

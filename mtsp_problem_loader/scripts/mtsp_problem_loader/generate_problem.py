@@ -23,7 +23,7 @@ edge_weight_type =  "EUC_2D"
 num_robots = 2
 neighborhood_radius = 2 
 
-arena_file = "../../../mtsp_state_machine/config/simulation/world.yaml"
+arena_file = "../../../mtsp_state_machine/config/world.yaml"
 uav_start_pos_files = ["../../../mtsp_state_machine/tmux/test/pos1.txt", "../../../mtsp_state_machine/tmux/test/pos2.txt"]
 #fill targets array with random distinct targets within x_limits adn y_limits bounds
 
