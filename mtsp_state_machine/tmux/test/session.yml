@@ -1,7 +1,7 @@
 name: simulation
 root: ./
-startup_window: takeoff 
-pre_window: export UAV_NAME=uav1; export RUN_TYPE=simulation; export UAV_TYPE=f450; export WORLD_NAME=simulation
+startup_window: start_planning
+pre_window: export UAV_NAME=uav1; export RUN_TYPE=simulation; export UAV_TYPE=f450; export WORLD_FILE=./custom_configs/world.yaml
 windows:
   - roscore:
       layout: tiled
@@ -24,13 +24,13 @@ windows:
   - control:
       layout: tiled
       panes:
-        - export UAV_NAME=uav1; waitForOdometry; roslaunch mtsp_state_machine uav_manager_simulation.launch
-        - export UAV_NAME=uav2; waitForOdometry; roslaunch mtsp_state_machine uav_manager_simulation.launch
+        - export UAV_NAME=uav1; waitForOdometry; roslaunch mrs_uav_general core.launch config_constraint_manager:=./custom_configs/constraint_manager.yaml
+        - export UAV_NAME=uav2; waitForOdometry; roslaunch mrs_uav_general core.launch config_constraint_manager:=./custom_configs/constraint_manager.yaml
   - automatic_start:
       layout: tiled
       panes:
-        - export UAV_NAME=uav1; waitForSimulation; roslaunch mtsp_state_machine uav_automatic_start.launch
-        - export UAV_NAME=uav2; waitForSimulation; roslaunch mtsp_state_machine uav_automatic_start.launch
+        - export UAV_NAME=uav1; waitForSimulation; roslaunch mrs_uav_general automatic_start.launch custom_config:=./custom_configs/automatic_start.yaml
+        - export UAV_NAME=uav2; waitForSimulation; roslaunch mrs_uav_general automatic_start.launch custom_config:=./custom_configs/automatic_start.yaml
   - state_machine:
       layout: even-vertical
       panes:

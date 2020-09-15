@@ -3,7 +3,7 @@
   <arg name="uav_name" default="$(optenv UAV_NAME uav)"/>
   <arg name="standalone" default="false" />
 
-  <arg name="world_file" default="$(find mtsp_state_machine)/config/simulation/world.yaml" />
+  <arg name="world_file" default="$(find mtsp_state_machine)/config/world.yaml" />
 
   <arg unless="$(arg standalone)" name="nodelet" value="load"/>
   <arg     if="$(arg standalone)" name="nodelet" value="standalone"/>

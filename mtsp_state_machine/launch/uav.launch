@@ -3,7 +3,7 @@
   <arg name="uav_name" default="$(optenv UAV_NAME uav)"/>
   <arg name="standalone" default="false" />
 
-  <arg name="world_file" default="$(find mrs_general)/config/world_cisar.yaml" />
+  <arg name="world_file" default="$(find mrs_general)/config/worlds/world_cisar.yaml" />
 
   <arg unless="$(arg standalone)" name="nodelet" value="load"/>
   <arg     if="$(arg standalone)" name="nodelet" value="standalone"/>
