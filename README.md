@@ -9,10 +9,10 @@ output: pdf_document
 # Practical seminar task
 
 The practical seminar focuses on solving the min-max Multiple Traveling Salesman Problems with Neighborhoods (MTSPN) using two drones.
-The problem consists of *n* target locations, placed throughout the fly area, with the predefined circular neighborhood which has to be visited.
+The problem consists of *n* target locations placed throughout the fly area with a predefined circular neighborhood which has to be visited.
 Both UAVs have a predefined starting position and limited maximal velocity and acceleration.
-The objective of the task is to minimize the maximal flight time of the drones and visit all target location neighborhoods.
-During the simulated and real flight, each unvisited target location and triggering by 5 s, and potential collision between the drones by 10 s.
+The objective of the task is to minimize the maximal flight time of the drones and to visit all target location neighborhoods.
+During the simulated and real flight, each unvisited target location is penalized by 5 s and a potential collision between the drones by 10 s.
 The assignment is given with already working planner.
 However, the planner has poor performance and thus can be significantly improved.
 
@@ -32,14 +32,14 @@ The second option is viable even on a computer without ROS and the MRS simulatio
 1. Run tmux script in `mtsp_state_machine/tmux/test/start.sh` to start Gazebo simulation of two drones that fly the planned trajectory.
 2. Execute the provided planner by running `python mtsp_planner/scripts/planner.py` in a terminal. This will plot the trajectories and velocity profile for both drones.
 
-Please keep your code with you e.g. by using USB stick or uploading to cloud. Do not commit to to the git project and expect your code in the provided PCs to be cleaned before next practicals.
+Please keep your code with you e.g. by using USB stick or uploading to cloud. Do not commit to our git project and expect your code in the provided PCs to be cleaned before next practicals.
 
 ## Current code structure
 
 There are four packages containing parts of the assignment.
 The *mtsp_msgs* contains ROS message definitions for, e.g., sending MTSP problem definition.
 The *mtsp_planner* contains the MTSP(N) planning part that is the one you will work on.
-Package *mtsp_problem_loader* contains MTSP problem loader that parses give problem file and sends it to the planner.
+Package *mtsp_problem_loader* contains MTSP problem loader that parses given problem file and sends it to the planner.
 Finally, the *mtsp_state_machine* control the task execution (takeoff, flying to start, following the trajectory) and distribution of the messages.
 
 Important files that are to be improved or modified are:
