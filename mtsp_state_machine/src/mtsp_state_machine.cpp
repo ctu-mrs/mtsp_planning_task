@@ -1101,7 +1101,12 @@ void MtspStateMachine::mainTimer([[maybe_unused]] const ros::TimerEvent& event) 
 
         } else {
 
-          ROS_ERROR("[MtspStateMachine]: Starting point condition is not satisfied!");
+          if(!start1_ok){
+            ROS_ERROR("[MtspStateMachine]: Trajectory 1 - The first point of the planned trajectory is not within the required starting point neighborhood!");
+          }
+          if(!start2_ok){
+            ROS_ERROR("[MtspStateMachine]: Trajectory 2 - The first point of the planned trajectory is not within the required starting point neighborhood!");
+          }
           switchState(IDLE_STATE);
         }
       }
