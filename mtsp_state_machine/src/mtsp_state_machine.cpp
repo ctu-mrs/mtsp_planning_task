@@ -583,7 +583,7 @@ bool MtspStateMachine::callbackStart([[maybe_unused]] std_srvs::Trigger::Request
   switchState(PLANNING_STATE);
 
   res.success = true;
-  res.message = "stared";
+  res.message = "started";
 
   return true;
 }
@@ -606,10 +606,10 @@ void MtspStateMachine::callForProblem(void) {
 
     if (!srv_out.response.success) {
 
-      ROS_ERROR("[UavManager]: call for problem failed: %s", srv_out.response.message.c_str());
+      ROS_ERROR("[MtspStateMachine]: call for problem failed: %s", srv_out.response.message.c_str());
     } else {
 
-      ROS_INFO("[UavManager]: called for problem");
+      ROS_INFO("[MtspStateMachine]: called for problem");
       break;
     }
   }
@@ -670,7 +670,7 @@ void MtspStateMachine::validateStartPositionTimerOneshot([[maybe_unused]] const 
 
     if (!ref_out.response.success) {
 
-      ROS_ERROR("[UavManager]: current uav position (%d) is not valid: %s", id, ref_out.response.message.c_str());
+      ROS_ERROR("[MtspStateMachine]: current uav position (%d) is not valid: %s", id, ref_out.response.message.c_str());
 
     } else {
 
@@ -744,7 +744,7 @@ void MtspStateMachine::landTimerOneshot([[maybe_unused]] const ros::TimerEvent& 
 
     if (!srv_out.response.success) {
 
-      ROS_ERROR("[UavManager]: call for land (%d) failed: %s", id, srv_out.response.message.c_str());
+      ROS_ERROR("[MtspStateMachine]: call for land (%d) failed: %s", id, srv_out.response.message.c_str());
     } else {
 
       ROS_INFO("[MtspStateMachine]: landing (%d)", id);
@@ -771,7 +771,7 @@ void MtspStateMachine::flyToStartTimerOneshot([[maybe_unused]] const ros::TimerE
 
     if (!srv_out.response.success) {
 
-      ROS_ERROR("[UavManager]: call for flying to start (%d) failed: %s", id, srv_out.response.message.c_str());
+      ROS_ERROR("[MtspStateMachine]: call for flying to start (%d) failed: %s", id, srv_out.response.message.c_str());
     } else {
 
       ROS_INFO("[MtspStateMachine]: flying to start (%d)", id);
@@ -798,7 +798,7 @@ void MtspStateMachine::startFollowingTimerOneshot([[maybe_unused]] const ros::Ti
 
     if (!srv_out.response.success) {
 
-      ROS_ERROR("[UavManager]: call for start following (%d) failed: %s", id, srv_out.response.message.c_str());
+      ROS_ERROR("[MtspStateMachine]: call for start following (%d) failed: %s", id, srv_out.response.message.c_str());
     } else {
 
       ROS_INFO("[MtspStateMachine]: started following (%d)", id);
@@ -839,7 +839,7 @@ void MtspStateMachine::loadTrajectoryTimerOneshot([[maybe_unused]] const ros::Ti
           }
         }
       }
-      ROS_ERROR("[UavManager]: call for loading trajectory (%d) failed", id);
+      ROS_ERROR("[MtspStateMachine]: call for loading trajectory (%d) failed", id);
     } else {
     loaded:
 
@@ -1101,10 +1101,10 @@ void MtspStateMachine::mainTimer([[maybe_unused]] const ros::TimerEvent& event) 
 
         } else {
 
-          if(!start1_ok){
+          if (!start1_ok) {
             ROS_ERROR("[MtspStateMachine]: Trajectory 1 - The first point of the planned trajectory is not within the required starting point neighborhood!");
           }
-          if(!start2_ok){
+          if (!start2_ok) {
             ROS_ERROR("[MtspStateMachine]: Trajectory 2 - The first point of the planned trajectory is not within the required starting point neighborhood!");
           }
           switchState(IDLE_STATE);
