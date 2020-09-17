@@ -77,6 +77,8 @@ private:
   int  service_call_repeat_;
   bool land_ = false;
 
+  std::string master_uav_name_;
+
   bool start_position_1_valid = false;
   bool start_position_2_valid = false;
 
@@ -273,6 +275,7 @@ void MtspStateMachine::onInit() {
   param_loader.loadParam("distance_timer_rate", distance_timer_rate_);
   param_loader.loadParam("service_call_repeat", service_call_repeat_);
   param_loader.loadParam("land", land_);
+  param_loader.loadParam("master_uav_name", master_uav_name_);
 
   safety_area_points = param_loader.loadMatrixDynamic2("safety_area/safety_area", -1, 2);
 
@@ -1218,7 +1221,7 @@ void MtspStateMachine::rvizTimer([[maybe_unused]] const ros::TimerEvent& event) 
     bool visied = point_distances[i];
 
     visualization_msgs::Marker marker;
-    marker.header.frame_id    = "common_origin";
+    marker.header.frame_id    = master_uav_name_ + "/gps_origin";
     marker.header.stamp       = ros::Time::now();
     marker.ns                 = "mtsp";
     marker.id                 = id++;
@@ -1250,7 +1253,7 @@ void MtspStateMachine::rvizTimer([[maybe_unused]] const ros::TimerEvent& event) 
     if (trajectory_1_loaded) {
 
       visualization_msgs::Marker line_list;
-      line_list.header.frame_id    = "common_origin";
+      line_list.header.frame_id    = master_uav_name_ + "/gps_origin";
       line_list.header.stamp       = ros::Time::now();
       line_list.ns                 = "mtsp";
       line_list.id                 = id++;
@@ -1272,7 +1275,7 @@ void MtspStateMachine::rvizTimer([[maybe_unused]] const ros::TimerEvent& event) 
       line_list.color.b            = 0.0;
 
       visualization_msgs::Marker point_list;
-      point_list.header.frame_id    = "common_origin";
+      point_list.header.frame_id    = master_uav_name_ + "/gps_origin";
       point_list.header.stamp       = ros::Time::now();
       point_list.ns                 = "mtsp";
       point_list.id                 = id++;
@@ -1315,7 +1318,7 @@ void MtspStateMachine::rvizTimer([[maybe_unused]] const ros::TimerEvent& event) 
     if (trajectory_2_loaded) {
 
       visualization_msgs::Marker line_list;
-      line_list.header.frame_id    = "common_origin";
+      line_list.header.frame_id    = master_uav_name_ + "/gps_origin";
       line_list.header.stamp       = ros::Time::now();
       line_list.ns                 = "mtsp";
       line_list.id                 = id++;
@@ -1337,7 +1340,7 @@ void MtspStateMachine::rvizTimer([[maybe_unused]] const ros::TimerEvent& event) 
       line_list.color.b            = 0.0;
 
       visualization_msgs::Marker point_list;
-      point_list.header.frame_id    = "common_origin";
+      point_list.header.frame_id    = master_uav_name_ + "/gps_origin";
       point_list.header.stamp       = ros::Time::now();
       point_list.ns                 = "mtsp";
       point_list.id                 = id++;
@@ -1375,7 +1378,7 @@ void MtspStateMachine::rvizTimer([[maybe_unused]] const ros::TimerEvent& event) 
   }
 
   visualization_msgs::Marker line_list;
-  line_list.header.frame_id    = "common_origin";
+  line_list.header.frame_id    = master_uav_name_ + "/gps_origin";
   line_list.header.stamp       = ros::Time::now();
   line_list.ns                 = "mtsp";
   line_list.id                 = id++;
@@ -1397,7 +1400,7 @@ void MtspStateMachine::rvizTimer([[maybe_unused]] const ros::TimerEvent& event) 
   line_list.color.b            = 0.0;
 
   visualization_msgs::Marker point_list;
-  point_list.header.frame_id    = "common_origin";
+  point_list.header.frame_id    = master_uav_name_ + "/gps_origin";
   point_list.header.stamp       = ros::Time::now();
   point_list.ns                 = "mtsp";
   point_list.id                 = id++;

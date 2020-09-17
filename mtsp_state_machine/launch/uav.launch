@@ -28,6 +28,7 @@
 
       <rosparam file="$(find mtsp_state_machine)/config/uav.yaml" />
       <rosparam file="$(arg world_file)" />
+      <param name="master_uav_name" value="$(arg uav1)" />
 
       <!-- Subscribers -->
       <remap from="~mpc_diagnostics_1_in" to="/$(arg uav1)/control_manager/mpc_tracker/diagnostics" />
