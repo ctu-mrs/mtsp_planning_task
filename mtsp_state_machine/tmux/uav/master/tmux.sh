@@ -20,7 +20,7 @@ PROJECT_NAME=summer_school_mtspn
 MAIN_DIR=~/"bag_files"
 
 # following commands will be executed first in each window
-pre_input="mkdir -p $MAIN_DIR/$PROJECT_NAME"
+pre_input="mkdir -p $MAIN_DIR/$PROJECT_NAME; export WORLD_FILE=../world.yaml"
 
 # define commands
 # 'name' 'command'
@@ -32,7 +32,7 @@ input=(
 '
   'Sensors' 'waitForRos; roslaunch mrs_uav_general sensors.launch
 '
-  'tf_connector' 'waitForRos; rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 '"$UAV_NAME"'/gps_origin uav2/gps_origin
+  'tf_connector' 'waitForRos; rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 '"$UAV_NAME"'/gps_origin uav52/gps_origin
 '
   'Status' 'waitForRos; roslaunch mrs_uav_status status.launch
 '
