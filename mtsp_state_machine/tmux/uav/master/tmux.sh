@@ -44,7 +44,7 @@ input=(
 '
   'Planner' 'waitForRos; roslaunch mtsp_planner planner.launch
 '
-  'StateMachine' 'waitForRos; roslaunch mtsp_state_machine uav.launch
+  'StateMachine' 'waitForRos; roslaunch mtsp_state_machine uav.launch uav1:=uav42 uav2:=uav52
 '
   'Start' 'waitForRos; rosservice call /'"$UAV_NAME"'mtsp_state_machine/start'
 	'Land' 'rosservice call /'"$UAV_NAME"'/uav_manager/land'
