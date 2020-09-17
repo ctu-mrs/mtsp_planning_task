@@ -56,8 +56,8 @@
       <remap from="~takeoff_1_out" to="/$(arg uav1)/mtsp_state_machine/ready_to_takeoff" />
       <remap from="~takeoff_2_out" to="/$(arg uav2)/mtsp_state_machine/ready_to_takeoff" />
 
-      <remap from="~land_1_out" to="/$(arg uav1)/control_manager/eland" />
-      <remap from="~land_2_out" to="/$(arg uav2)/control_manager/eland" />
+      <remap from="~land_1_out" to="/$(arg uav1)/uav_manager/land" />
+      <remap from="~land_2_out" to="/$(arg uav2)/uav_manager/land" />
 
       <remap from="~fly_to_start_1_out" to="/$(arg uav1)/control_manager/goto_trajectory_start" />
       <remap from="~fly_to_start_2_out" to="/$(arg uav2)/control_manager/goto_trajectory_start" />
