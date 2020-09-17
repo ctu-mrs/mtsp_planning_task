@@ -4,11 +4,12 @@
  
 use_utm_origin: true
 utm_origin_units: 0 # 0 - UTM, 1 - Latitude Longitude
-utm_origin_lat: 50.076387
-utm_origin_lon: 14.418039
+utm_origin_lat: 0.0
+utm_origin_lon: 0.0
 
-utm_origin_x: 0
-utm_origin_y: 0
+# cisar race track
+utm_origin_x: 458422.2
+utm_origin_y: 5551241.4
 
 use_local_origin: false
 local_origin_x: 0.0
