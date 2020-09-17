@@ -17,6 +17,9 @@ topics: # topics published out of this machine to receivers specified above
  - name: "odometry/slow_odom"
    compress: false # enable bz2 compression
    rate: 1.0
+ - name: "odometry/odom_main"
+   compress: false # enable bz2 compression
+   rate: 20.0
 
 services:
   - name: "/*/control_manager/goto_trajectory_start"

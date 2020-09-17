@@ -13,6 +13,8 @@ fi
 
 source $HOME/.bashrc
 
+export SLAVE_NAME=uav42
+
 # change this to your liking
 PROJECT_NAME=summer_school_mtspn
 
@@ -32,7 +34,7 @@ input=(
 '
   'Sensors' 'waitForRos; roslaunch mrs_uav_general sensors.launch
 '
-  'tf_connector' 'waitForRos; rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 '"$UAV_NAME"'/gps_origin uav52/gps_origin
+  'tf_connector' 'waitForRos; rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 '"$UAV_NAME"'/gps_origin '"$SLAVE_NAME"'/gps_origin
 '
   'Status' 'waitForRos; roslaunch mrs_uav_status status.launch
 '
@@ -44,7 +46,7 @@ input=(
 '
   'Planner' 'waitForRos; roslaunch mtsp_planner planner.launch
 '
-  'StateMachine' 'waitForRos; roslaunch mtsp_state_machine uav.launch uav1:=uav42 uav2:=uav52
+  'StateMachine' 'waitForRos; roslaunch mtsp_state_machine uav.launch uav1:='"$UAV_NAME"' uav2:='"$SLAVE_NAME"'
 '
   'Start' 'waitForRos; rosservice call /'"$UAV_NAME"'/mtsp_state_machine/start'
 	'Land' 'rosservice call /'"$UAV_NAME"'/uav_manager/land'
