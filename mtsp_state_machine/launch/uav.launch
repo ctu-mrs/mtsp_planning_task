@@ -45,7 +45,7 @@
       <remap from="~problem_in" to="mtsp_problem_loader/tsp_problem" />
 
       <!-- Publishers -->
-      <remap from="~visualization_marker_array_out" to="/visualization_marker_array" />
+      <remap from="~visualization_marker_array_out" to="~visualization_marker_array" />
 
       <!-- Service clients -->
       <remap from="~load_trajectory_out" to="mtsp_problem_loader/start" />
