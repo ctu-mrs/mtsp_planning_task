@@ -5,6 +5,9 @@ topics: # topics published out of this machine to receivers specified above
  - name: "control_manager/trajectory_original/poses"
    compress: false # enable bz2 compression
    rate: 1.0
+ - name: "control_manager/trajectory_original/markers"
+   compress: false # enable bz2 compression
+   rate: 1.0
  - name: "control_manager/mpc_tracker/predicted_trajectory_debugging"
    compress: false # enable bz2 compression
    rate: 1.0
