@@ -36,7 +36,7 @@ input=(
 '
   'Control' 'waitForRos; roslaunch mrs_uav_general core.launch config_constraint_manager:=./custom_configs/constraint_manager.yaml config_uav_manager:=./custom_configs/uav_manager.yaml
 '
-  'AutoStart' 'waitForRos; roslaunch mrs_uav_general
+  'AutoStart' 'waitForRos; roslaunch mrs_uav_general automatic_start.launch
 '
 	'Land' 'rosservice call /'"$UAV_NAME"'/uav_manager/land'
 	'LandHome' 'rosservice call /'"$UAV_NAME"'/uav_manager/land_home'
