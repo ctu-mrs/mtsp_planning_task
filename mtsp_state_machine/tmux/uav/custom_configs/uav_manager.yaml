@@ -1,3 +1,5 @@
 takeoff:
   during_takeoff:
+    controller: "MpcController"
+  after_takeoff:
     controller: "Se3Controller"
