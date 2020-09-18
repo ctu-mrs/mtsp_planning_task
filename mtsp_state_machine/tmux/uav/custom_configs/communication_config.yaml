@@ -27,6 +27,8 @@ topics: # topics published out of this machine to receivers specified above
 services:
   - name: "/*/control_manager/goto_trajectory_start"
     type: std_srvs/Trigger
+  - name: "/*/control_manager/validate_reference_2d"
+    type: mrs_msgs/ValidateReference
   - name: "/*/control_manager/start_trajectory_tracking"
     type: std_srvs/Trigger
   - name: "/*/control_manager/trajectory_reference"
