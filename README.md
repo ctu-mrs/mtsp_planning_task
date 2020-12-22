@@ -1,12 +1,15 @@
----
-title: "Practical seminar task assignment"
-author: Multi-robot Systems (MRS) group at Czech Technical University in Prague
-date: September 2020
-geometry: margin=1.1cm
-output: pdf_document
----
+<!-- --- -->
+<!-- title: "Practical seminar task assignment" -->
+<!-- author: Multi-robot Systems (MRS) group at Czech Technical University in Prague -->
+<!-- date: September 2020 -->
+<!-- geometry: margin=1.1cm -->
+<!-- output: pdf_document -->
+<!-- --- -->
 
 # Practical seminar task
+
+| Build status | [![Build Status](https://github.com/ctu-mrs/mtsp_planning_task/workflows/Melodic/badge.svg)](https://github.com/ctu-mrs/mtsp_planning_task/actions) | [![Build Status](https://github.com/ctu-mrs/mtsp_planning_task/workflows/Noetic/badge.svg)](https://github.com/ctu-mrs/mtsp_planning_task/actions) |
+|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|
 
 The practical seminar focuses on solving the min-max Multiple Traveling Salesman Problems with Neighborhoods (MTSPN) using two drones.
 The problem consists of *n* target locations placed throughout the fly area with a predefined circular neighborhood which has to be visited.
