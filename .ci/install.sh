@@ -11,7 +11,8 @@ MY_PATH=`pwd`
 echo "Starting install preparation"
 
 sudo apt-get -y update -qq
-sudo apt-mark hold openssh-server
+sudo apt-mark hold openssh-server # the installation might get stuck while upgrading this
+sudo apt-mark hold msodbcsql17 mssql-tools # microsoft wants to manually accept EULA while upgrading this
 
 # the "gce-compute-image-packages" package often freezes the installation at some point
 # the installation freezes when it tries to manage some systemd services
