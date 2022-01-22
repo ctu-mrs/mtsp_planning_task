@@ -10,7 +10,7 @@ import matplotlib.patches as mpatches
 import math
 import time
 from mrs_msgs.msg import Reference
-from mrs_msgs.msg import TrajectoryReference 
+from mrs_msgs.msg import TrajectoryReference
 import dubins
 
 # #{ dist_euclidean_squared()
@@ -74,10 +74,10 @@ class TSPTrajectory():
 
         time_from_init_to_max_vel = (self.max_velocity - init_velocity) / self.max_acceleration
         time_from_max_to_final_vel = (self.max_velocity - final_velocity) / self.max_acceleration
-        
+
         dist_from_init_to_max_vel = 0.5 * (self.max_velocity + init_velocity) * time_from_init_to_max_vel  # average speed * time
         dist_from_max_vel_to_final = 0.5 * (self.max_velocity + final_velocity) * time_from_max_to_final_vel  # average speed * time
-        
+
         """
         print("time_from_init_to_max_vel", time_from_init_to_max_vel, "s")
         print("time_from_max_to_final_vel", time_from_max_to_final_vel, "s")
@@ -89,7 +89,7 @@ class TSPTrajectory():
             #print("can not reach max vel in trajectory")
             t = 0
             sample = 0
-            
+
             if init_velocity == 0 and final_velocity == 0:
                 time_to_possible_max_vel = math.sqrt(dist_total / self.max_acceleration)
                 velocity_in_middle = time_to_possible_max_vel * self.max_acceleration
@@ -108,23 +108,23 @@ class TSPTrajectory():
                     dist_acc_decc = dist_total - dist_init_accel
                     time_to_possible_max_vel = time_init_accel + (-final_velocity + math.sqrt(final_velocity ** 2 + self.max_acceleration * dist_acc_decc)) / self.max_acceleration
                     velocity_in_middle = init_velocity + time_to_possible_max_vel * self.max_acceleration
-                    
+
                     """
                     print("time_init_accel", time_init_accel)
                     print("dist_init_accel", dist_init_accel)
                     print("dist_total", dist_total)
-                    print("dist_acc_decc", dist_acc_decc)  
+                    print("dist_acc_decc", dist_acc_decc)
                     print("such dist is", 0.5 * (velocity_in_middle + init_velocity) * time_to_possible_max_vel * 2)
                     """
                     trajectory_part_time = 2 * time_to_possible_max_vel - time_init_accel
-            
+
             """
             print("time_to_possible_max_vel", time_to_possible_max_vel)
             print("velocity_in_middle", velocity_in_middle)
             print("sample_start_time", sample_start_time)
             """
 
-            
+
             while (sample + 1) * self.time_sample <= time_to_possible_max_vel - sample_start_time:
                 t = (sample + 1) * self.time_sample + sample_start_time
                 sample += 1
@@ -133,8 +133,8 @@ class TSPTrajectory():
                 #print("t", t, "v", v, "s", s, "sample", sample)
                 pos_in_dist = pos_in_distance(start, stop, s)
                 samples.append(pos_in_dist)
-                
-                
+
+
             #print("end acc")
 
             while (sample + 1) * self.time_sample <= trajectory_part_time - sample_start_time:
@@ -146,8 +146,8 @@ class TSPTrajectory():
                 #print("t", t, "v", v, "s", s, "sample", sample)
                 pos_in_dist = pos_in_distance(start, stop, s)
                 samples.append(pos_in_dist)
-            
-            #print("end decc")  
+
+            #print("end decc")
 
         else:  # can reach maximal speed in straigh line
             #print("can reach max vel")
@@ -169,7 +169,7 @@ class TSPTrajectory():
                 pos_in_dist = pos_in_distance(start, stop, s)
                 samples.append(pos_in_dist)
                 #print("t", t, "v", v, "s", s, "sample", sample)
-            
+
             #print("end acc")
 
             while (sample + 1) * self.time_sample <= time_from_init_to_max_vel + time_constant_speed - sample_start_time:
@@ -181,8 +181,8 @@ class TSPTrajectory():
                 pos_in_dist = pos_in_distance(start, stop, s)
                 samples.append(pos_in_dist)
                 #print("t", t, "v", v, "s", s, "sample", sample)
-                
-            #print("end const")  
+
+            #print("end const")
 
             while (sample + 1) * self.time_sample <= time_from_init_to_max_vel + time_constant_speed + time_from_max_to_final_vel - sample_start_time:
                 t = (sample + 1) * self.time_sample + sample_start_time
@@ -197,7 +197,7 @@ class TSPTrajectory():
             if final_velocity == 0 and samples[-1] != stop:
                 #print("t last", "v", 0, "s", dist_total)
                 samples.append(stop)
-            
+
         return samples, trajectory_part_time
 
     # #} end of sample_trajectory_euclidean()
@@ -231,100 +231,100 @@ class TSPTrajectory():
 
     def sample_trajectory_dubins(self, sequence, turning_velocity=None):
         """ sample dubins tarjectory over sequence """
-        
+
         print("sample_trajectory_dubins in sequence", sequence)
-        
+
         if turning_velocity is None:
             turning_velocity = self.max_velocity
         print("using turning_velocity", turning_velocity ," and acceleration ",self.max_acceleration)
-       
-            
+
+
         turning_radius = (turning_velocity * turning_velocity) / self.max_acceleration
         print("which means turning_radius", turning_radius)
-         
+
         sequence_start = 0
         init_velocity = 0
         time_to_turning_velocity = (turning_velocity - init_velocity) / self.max_acceleration
         dist_to_turning_velocity = 0.5 * (turning_velocity + init_velocity) * time_to_turning_velocity  # average speed * time
-        
-        samples = []   
+
+        samples = []
         sample = 0
         t = 0
         last_segment_end_time = 0
         next_sample_start_time = 0
         samples.append(sequence[sequence_start])
         #print("t", t, "v", 0, "s", 0, "sample", sample, "start")
-        
+
         for target_id in range(sequence_start + 1, len(sequence)):
             start = sequence[target_id - 1]
             end = sequence[target_id]
             dubins_path = dubins.shortest_path(start, end, turning_radius)
-            
+
             """
             print("segment 0", dubins_path.segment_length(0))
             print("segment 1", dubins_path.segment_length(1))
             print("segment 2", dubins_path.segment_length(2))
             print("dubins lenght", dubins_path.path_length())
             """
-            
+
             # first segment of dubins
             if (sample + 1) * self.time_sample < time_to_turning_velocity:
                 init_velocity = last_segment_end_time * self.max_acceleration
                 time_accel = (turning_velocity - init_velocity) / self.max_acceleration
                 dist_accel = init_velocity * time_accel + 0.5 * self.max_acceleration * time_accel * time_accel
-                
+
                 if dubins_path.segment_length(0) < dist_accel :  # accel whole time
-                    segment_1_time = (-init_velocity + math.sqrt(init_velocity ** 2 + 2 * self.max_acceleration * dubins_path.segment_length(0))) / self.max_acceleration  # turning segment 0    
+                    segment_1_time = (-init_velocity + math.sqrt(init_velocity ** 2 + 2 * self.max_acceleration * dubins_path.segment_length(0))) / self.max_acceleration  # turning segment 0
                 else:  # accel only part time
                     segment_1_time = time_accel + (dubins_path.segment_length(0) - dist_accel) / turning_velocity
-                    
+
             else:
-                segment_1_time = dubins_path.segment_length(0) / turning_velocity  # turning segment 0 
+                segment_1_time = dubins_path.segment_length(0) / turning_velocity  # turning segment 0
                 init_velocity = turning_velocity
-                  
-                  
+
+
             #print("last_segment_end_time", last_segment_end_time)
             #print("segment_1_time",segment_1_time)
-            
+
             acc_time = turning_velocity/self.max_acceleration
             segment_1_time_dist = 0.5*self.max_acceleration*acc_time*acc_time + (segment_1_time-acc_time)*turning_velocity
-            
-            
+
+
             while (sample + 1) * self.time_sample <= last_segment_end_time + segment_1_time:
                 t = (sample + 1) * self.time_sample - last_segment_end_time
-                
+
                 if init_velocity != turning_velocity:
                     if (sample + 1) * self.time_sample <= time_to_turning_velocity: # still accelerating from init_velocity
                         s = init_velocity * t + 0.5 * self.max_acceleration * (t ** 2)
                     else:
                         dist_init_acc = 0.5 * (turning_velocity + init_velocity) * time_to_turning_velocity  # alreaddy accelerated from init_velocity to turning_velocity
-                        
+
                         time_after_init_acc = t - time_to_turning_velocity
                         s = dist_init_acc + turning_velocity * time_after_init_acc
-                                               
+
                 else: # already turning velocity from begining
                     s = turning_velocity * t
-                    
+
                 sample += 1
                 samples.append(dubins_path.sample(s))
                 #print("t", t, "s", s, "sample", sample,"sample time", sample*self.time_sample, "dubins length", dubins_path.path_length(), "dubins part len", dubins_path.segment_length(0), "rot1")
-              
+
             last_segment_end_time += segment_1_time
             next_sample_start_time = sample * self.time_sample - last_segment_end_time
-            
+
             if last_segment_end_time < time_to_turning_velocity:
                 init_velocity = last_segment_end_time * self.max_acceleration
             else:
                 init_velocity = turning_velocity
-            
+
             #print("---------- end fist segment --------------- at time", last_segment_end_time)
-            
-            
+
+
             # second segment of Dubins
             if dubins_path.path_type() != dubins.LRL and dubins_path.path_type() != dubins.RLR: # straight line segment
                 start_straight_line = dubins_path.sample(dubins_path.segment_length(0))
                 stop_straight_line = dubins_path.sample(dubins_path.segment_length(0) + dubins_path.segment_length(1))
-                
+
                 """
                 print("start_straight_line", start_straight_line)
                 print("stop_straight_line", stop_straight_line)
@@ -332,7 +332,7 @@ class TSPTrajectory():
                 print("final_velocity", turning_velocity)
                 print("next_sample_start_time", next_sample_start_time)
                 """
-                
+
                 straight_line_samples, segment_2_time = self.sample_euclidean_with_stops(start_straight_line[0:2], stop_straight_line[0:2], init_velocity=init_velocity, final_velocity=turning_velocity, sample_start_time=next_sample_start_time)
                 phi = start_straight_line[2]
                 straight_line_samples_w_head = [(x, y, phi) for x, y in straight_line_samples]
@@ -347,34 +347,34 @@ class TSPTrajectory():
                     s = dubins_path.segment_length(0) + turning_velocity * t
                     samples.append(dubins_path.sample(s))
                     #print("t", t, "s", s, "sample", sample, "dubins length", dubins_path.path_length(), "rot middle")
-            
+
             last_segment_end_time += segment_2_time
             next_sample_start_time = sample * self.time_sample - last_segment_end_time
             if (sample + 1) * self.time_sample < time_to_turning_velocity:
                 init_velocity = last_segment_end_time * self.max_acceleration
             else:
                 init_velocity = turning_velocity
-            
-            
+
+
             #print("---------- end second segment --------------- at time", last_segment_end_time)
-           
+
             segment_3_time = dubins_path.segment_length(2) / turning_velocity  # turning segment 2
             while (sample + 1) * self.time_sample <= last_segment_end_time + segment_3_time:
                 t = (sample + 1) * self.time_sample - last_segment_end_time
                 sample += 1
                 if init_velocity != turning_velocity:
                     s = dubins_path.segment_length(0) + dubins_path.segment_length(1) + init_velocity * t + 0.5 * self.max_acceleration * (t ** 2)
-                else:  
+                else:
                     s = dubins_path.segment_length(0) + dubins_path.segment_length(1) + turning_velocity * t
-               
+
                 samples.append(dubins_path.sample(s))
                 #print("t", t, "v", turning_velocity, "s", s, "sample", sample, "rot2")
-            
+
             last_segment_end_time += segment_3_time
             next_sample_start_time = sample * self.time_sample - last_segment_end_time
-           
+
             #print("---------- end last segment --------------- at time", last_segment_end_time)
-            
+
 
         return samples, last_segment_end_time
 
@@ -389,7 +389,7 @@ class TSPTrajectory():
         ax = fig.gca()
         ax.set_title(title)
         ax.set_ylabel('velocity [m/s]')
-	
+
         ax.set_xlabel('time [s]')
 
         velocities = [0]
@@ -411,8 +411,8 @@ class TSPTrajectory():
         plt.axhline(-self.max_acceleration, 0, len(accelerations), ls='-.', color='k')
         plt.plot(accelerations_time, accelerations, '-.', color=color, label='acc')
         ax.legend(loc='upper right')
-	ax2 = ax.twinx()
-	ax2.set_ylabel('acceleration [m/s^2]')
+        ax2 = ax.twinx()
+        ax2.set_ylabel('acceleration [m/s^2]')
 
     # #} end of plot_velocity_profile()
 

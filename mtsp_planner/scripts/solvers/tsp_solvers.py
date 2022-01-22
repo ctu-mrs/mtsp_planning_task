@@ -10,15 +10,12 @@ from sklearn.cluster import KMeans  # need to install sudo apt-get install pytho
 import numpy as np
 import math
 import dubins
-import tsp_trajectory
-from tsp_trajectory import dist_euclidean, pos_in_distance
+import solvers.tsp_trajectory
+from solvers.tsp_trajectory import dist_euclidean, pos_in_distance
 
 this_script_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(this_script_dir, "lkh"))
 import invoke_LKH
-
-
-
 
 class TSPSolver():
 
@@ -29,7 +26,7 @@ class TSPSolver():
 
     def cluster_kmeans(self, targets, num_clusters):
         """ find k-means clustering into num_clusters clusters and return 2d array of cluster's targets and also cluster centers"""
-        
+
         targets_xy = [[i[1], i[2]] for i in targets]
         targets_xy_array = np.array(targets_xy)
         km = KMeans(n_clusters=num_clusters)
@@ -50,7 +47,7 @@ class TSPSolver():
 
     def plan_tour_etsp(self, targets, start_idx):
         """ solve euclidean tsp on targets with given goals and starts"""
-        
+
         n = len(targets)
         self.distances = np.zeros((n, n))
         self.paths = {}
@@ -74,7 +71,7 @@ class TSPSolver():
 
     def compute_tsp_tour(self, start_idx=None, end_idx=None):
         """compute the shortest tour based on the distance matrix (self.distances)"""
-        
+
         n = len(self.distances)
         sequence = self.compute_tsp_sequence(start_idx=start_idx, end_idx=end_idx)
 
@@ -122,7 +119,7 @@ class TSPSolver():
         invoke_LKH.writeTSPLIBfile_FE(fname_tsp, self.distances, user_comment)
         invoke_LKH.run_LKHsolver_cmd(fname_tsp)  # , silent=True)
         sequence = invoke_LKH.read_LKHresult_cmd(fname_tsp)
-        
+
         if len(sequence) > 0 and sequence[0] != start_idx:
             for i in range(len(sequence)):
                 if sequence[i] == start_idx:
@@ -137,7 +134,7 @@ class TSPSolver():
 
     def plan_tour_etspn_decoupled(self, goals, start_idx, neighborhood_radius):
         """planning of euclidean tsp with neighborhoods"""
-        
+
         return self.plan_tour_dtspn_decoupled(goals, start_idx, neighborhood_radius, 0)
 
     # #} end of plan_tour_etspn_decoupled()
@@ -146,7 +143,7 @@ class TSPSolver():
 
     def plan_tour_dtspn_decoupled(self, goals, start_idx, sensing_radius, turning_radius):
         """planning of dubins tsp with neighborhoods"""
-        
+
         n = len(goals)
         self.distances = np.zeros((n, n))
         self.paths = {}
@@ -179,7 +176,7 @@ class TSPSolver():
             else:
                 local_samples_position = samples_position
                 local_sensing_radius = sensing_radius
-                
+
             for sp in range(local_samples_position):
                 for sh in range(samples_heading):
                     alpha = sp * 2 * math.pi / samples_heading
@@ -292,12 +289,12 @@ class TSPSolver():
         return path
 
     # #} end of plan_tour_dtspn_decoupled()
-    
+
     # #{ plan_tour_dtspn_noon_bean()
-    
+
     def plan_tour_dtspn_noon_bean(self, goals, start_idx, sensing_radius, turning_radius):
-        n = len(goals)     
-       
+        n = len(goals)
+
         samples_position = 4
         if sensing_radius == 0 :
             samples_position = 1
@@ -307,7 +304,7 @@ class TSPSolver():
             samples_heading = 1
 
         k = samples_position * samples_heading
-        
+
         samples = []
         sample_target = {}
         taget_samples = {}
@@ -319,20 +316,20 @@ class TSPSolver():
             else:
                 local_samples_position = samples_position
                 local_sensing_radius = sensing_radius
-            
+
             for sp in range(local_samples_position):
                 for sh in range(samples_heading):
                     alpha = sp * 2 * math.pi / samples_heading
                     position = g[1:3] + local_sensing_radius * np.array([math.cos(alpha), math.sin(alpha)])
                     heading = sh * 2 * math.pi / samples_heading
                     sample = (position[0], position[1], heading)
-                    
+
                     # save mapping from samples to targets and reversed
                     sample_target[len(samples)] = idx
                     if taget_samples.get(idx) is None:
                         taget_samples[idx] = []
                     taget_samples[idx].append(len(samples))
-                    
+
                     # add sample
                     samples.append(sample)
                     print(sample)
@@ -340,7 +337,7 @@ class TSPSolver():
         num_samples = len(samples)
         # matrix of all distances between samples of size[len(samples),len(samples)]
         all_distances = np.zeros([num_samples, num_samples])
-        
+
         max_dist = 0
         for i in range(num_samples):
             for j in range(num_samples):
@@ -358,29 +355,29 @@ class TSPSolver():
                 # store results
                 all_distances[i][j] = dist
 
-        self.distances = np.zeros([num_samples, num_samples])    
-        self.paths = {} 
+        self.distances = np.zeros([num_samples, num_samples])
+        self.paths = {}
         M = n * max_dist
         M2 = n * n * max_dist
-        
+
         for i in range(num_samples):
             for j in range(num_samples):
-                self.distances[i][j] = M2 
-                
+                self.distances[i][j] = M2
+
         for set_id in range(n):
             for idx_in_ts in range(len(taget_samples[set_id])):
                 from_sample_i = taget_samples[set_id][idx_in_ts - 1]
                 to_sample_i = taget_samples[set_id][idx_in_ts]
                 self.distances[from_sample_i][to_sample_i] = 0
                 print("from to", from_sample_i, to_sample_i, " = 0")
-        
+
         # quit()
         for from_set_id in range(n):
             for from_idx_in_ts in range(len(taget_samples[from_set_id])):
-            
+
                 for to_set_id in range(n):
                     if from_set_id != to_set_id:
-                        
+
                         for to_idx_in_ts in range(len(taget_samples[to_set_id])):
                             from_node = taget_samples[from_set_id][from_idx_in_ts]
                             to_node = taget_samples[to_set_id][to_idx_in_ts]
@@ -389,27 +386,27 @@ class TSPSolver():
                                 to_node_plus_one = taget_samples[to_set_id][0]
                             else:
                                 to_node_plus_one = taget_samples[to_set_id][to_idx_in_ts_plus_one]
-                            
+
                             self.distances[from_node][to_node_plus_one] = all_distances[from_node][to_node] + M
-        
-        # TODO - deal with start_idx 
-        #      - special case for single node cluster....... 
+
+        # TODO - deal with start_idx
+        #      - special case for single node cluster.......
 
         # sequence = self.compute_tsp_sequence(start_idx=start_idx)
         sequence = self.compute_tsp_sequence()
-        
+
         selected_samples = []
         for i in range(len(sequence)):
             set_prew = sample_target[sequence[i - 1]]
             set_now = sample_target[sequence[i]]
-            
+
             # print(sequence[i - 1], "in", set_prew)
             # print(sequence[i ], "in", set_now)
             if set_prew != set_now:
                 # print("add ",sequence[i - 1])
                 selected_samples.append(sequence[i - 1])
             # print("------")
-        
+
         if len(selected_samples) > 0 and sample_target[selected_samples[0]] != start_idx:
             for i in range(len(selected_samples)):
                 if sample_target[selected_samples[i]] == start_idx:
@@ -418,7 +415,7 @@ class TSPSolver():
                     break
 
         print("k", k)
-        print(selected_samples)        
+        print(selected_samples)
 
         path = []
         for a in range(0, n):
@@ -433,9 +430,8 @@ class TSPSolver():
                 if a == 0:
                     path.append(start)
                 path.append(end)
-        
+
         print("plan_tour_dtspn_noon_bean path", path)
         return path
 
         # #} end of plan_tour_dtspn_noon_bean()
-        
