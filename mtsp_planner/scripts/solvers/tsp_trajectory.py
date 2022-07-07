@@ -15,7 +15,6 @@ import dubins
 
 # #{ dist_euclidean_squared()
 
-
 def dist_euclidean_squared(coord1, coord2):
     """ euclidean distance between coord1 and coord2"""
     (x1, y1) = coord1
@@ -26,7 +25,6 @@ def dist_euclidean_squared(coord1, coord2):
 
 # #{ dist_euclidean()
 
-
 def dist_euclidean(coord1, coord2):
     """ euclidean distance between coord1 and coord2"""
     return math.sqrt(dist_euclidean_squared(coord1, coord2))
@@ -34,7 +32,6 @@ def dist_euclidean(coord1, coord2):
 # #} end of dist_euclidean()
 
 # #{ pos_in_distance()
-
 
 def pos_in_distance(start , stop , dist):
     dist_tot = dist_euclidean(start, stop)
@@ -227,7 +224,7 @@ class TSPTrajectory():
 
     # #} end of sample_trajectory_euclidean()
 
-    # #{ sampleTrajectoryDubins()
+    # #{ sample_trajectory_dubins()
 
     def sample_trajectory_dubins(self, sequence, turning_velocity=None):
         """ sample dubins tarjectory over sequence """
@@ -380,7 +377,7 @@ class TSPTrajectory():
 
     # #} end of sample_trajectory_dubins()
 
-    # #{ plotVelocityProfile()
+    # #{ plot_velocity_profile()
 
     def plot_velocity_profile(self, samples, color='k',title='Velocity profile'):
 

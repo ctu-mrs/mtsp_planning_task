@@ -22,7 +22,7 @@ class TSPSolver():
     def __init__(self):
         pass
 
-    # #{ cluester_kmeans()
+    # #{ cluster_kmeans()
 
     def cluster_kmeans(self, targets, num_clusters):
         """ find k-means clustering into num_clusters clusters and return 2d array of cluster's targets and also cluster centers"""
@@ -160,7 +160,7 @@ class TSPSolver():
         sequence = self.compute_tsp_sequence(start_idx=start_idx)
 
         samples_position = 8
-        if sensing_radius == 0 :
+        if sensing_radius == 0:
             samples_position = 1
 
         samples_heading = 8
@@ -296,7 +296,7 @@ class TSPSolver():
         n = len(goals)
 
         samples_position = 4
-        if sensing_radius == 0 :
+        if sensing_radius == 0:
             samples_position = 1
 
         samples_heading = 4
